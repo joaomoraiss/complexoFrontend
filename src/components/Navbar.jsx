@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logoComplexo.png';
@@ -27,7 +27,7 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* Link INICIAR SESSÃO deslocado mais para a direita */}
+     
       <Link to="/iniciar-sessao" className="relative text-base font-light mr-[0px] before:absolute before:top-full before:left-0 before:w-0 before:h-[1px] before:bg-black before:transition-all before:duration-300 hover:before:w-full">
         INICIAR SESSÃO
       </Link>

@@ -1,4 +1,4 @@
-// src/components/Newsletter.jsx
+
 import React from 'react';
 
 const Newsletter = () => {
