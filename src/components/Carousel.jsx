@@ -3,16 +3,16 @@ import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-// Importando as imagens diretamente
+
 import CasaAlfaiaLogo from '../assets/Casa Alfaia Logo.jpg';
 import CanoaLogo from '../assets/canoa_logo.png';
 import BorcelleLogo from '../assets/borcelle_logo.png';
 
 const studios = [
-  { name: 'Canoa Studio', image: CanoaLogo }, // Usando a imagem Canoa Logo
-  { name: 'Casa Alfaia', image: CasaAlfaiaLogo }, // Usando a imagem Casa Alfaia Logo
-  { name: 'Borcelle Studio', image: BorcelleLogo }, // Usando a imagem Borcelle Logo
-  // Adicione mais estúdios conforme necessário
+  { name: 'Canoa Studio', image: CanoaLogo }, 
+  { name: 'Casa Alfaia', image: CasaAlfaiaLogo }, 
+  { name: 'Borcelle Studio', image: BorcelleLogo }, 
+ 
 ];
 
 // Setas personalizadas
@@ -21,7 +21,7 @@ const CustomLeftArrow = ({ onClick }) => {
     <button
       onClick={onClick}
       className="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 text-gray-600 hover:text-gray-800"
-      style={{ fontSize: '2.5rem' }} // Aumente o valor para ajustar o tamanho da seta
+      style={{ fontSize: '2.5rem' }} 
     >
       &#8249;
     </button>
@@ -33,7 +33,7 @@ const CustomRightArrow = ({ onClick }) => {
     <button
       onClick={onClick}
       className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 text-gray-600 hover:text-gray-800"
-      style={{ fontSize: '2.5rem' }} // Aumente o valor para ajustar o tamanho da seta
+      style={{ fontSize: '2.5rem' }} 
     >
       &#8250;
     </button>

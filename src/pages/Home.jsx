@@ -44,12 +44,12 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Carrossel de estúdios com espaçamento extra abaixo */}
+     
       <div className="mt-16 mb-16">
         <Carousel />
       </div>
 
-      {/* Newsletter com espaçamento extra acima e abaixo */}
+    
       <div className="mt-20 mb-20">
         <Newsletter />
       </div>
