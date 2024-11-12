@@ -1,4 +1,4 @@
-
+// src/pages/Sobre.jsx
 import React from 'react';
 
 const Sobre = () => {
