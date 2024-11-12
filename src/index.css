@@ -1,15 +1,14 @@
+/* src/index.css */
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,200&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
+/* Aplicar a fonte Exo globalmente ou em componentes específicos */
 body {
-  @apply font-sans; 
+  font-family: 'Exo', sans-serif;
 }
+
+
+
