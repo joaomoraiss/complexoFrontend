@@ -5,8 +5,8 @@ import logo from '../assets/logoComplexo.png';
 const Sobre = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center bg-gray-50">
-      <img src={logo} alt="Complexo Logo" className="w-48 h-auto mb-8" /> {/* Aumentei o tamanho da logo */}
-      <div className="max-w-3xl text-black text-base leading-relaxed"> {/* Cor preta, tamanho de fonte maior e espaçamento entre linhas */}
+      <img src={logo} alt="Complexo Logo" className="w-48 h-auto mb-8" /> 
+      <div className="max-w-3xl text-black text-base leading-relaxed"> 
         <p className="mb-6 text-black font-medium text-justify">
           O Complexo é uma plataforma dedicada a reunir e dar visibilidade aos estúdios de tatuagem ao longo do Recife,
           oferecendo um espaço exclusivo e focado para os profissionais do ramo. Nosso objetivo é criar uma vitrine para os

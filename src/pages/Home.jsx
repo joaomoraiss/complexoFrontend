@@ -1,4 +1,4 @@
-// src/pages/Home.jsx
+
 import React, { useEffect, useState } from 'react';
 import backgroundImage from '../assets/teste1.jpg';
 import Carousel from '../components/Carousel';
@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      {/* Imagem de fundo */}
+     
       <div
         className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] bg-cover bg-center"
         style={{ backgroundImage: `url(${backgroundImage})` }}
@@ -44,12 +44,12 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Carrossel de estúdios com espaçamento extra abaixo */}
+     
       <div className="mt-16 mb-16">
         <Carousel />
       </div>
 
-      {/* Newsletter com espaçamento extra acima e abaixo */}
+      
       <div className="mt-20 mb-20">
         <Newsletter />
       </div>

@@ -1,4 +1,4 @@
-// src/pages/JuntaSe.jsx
+
 import React from 'react';
 
 const JuntaSe = () => {
