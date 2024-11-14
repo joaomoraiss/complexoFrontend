@@ -1,6 +1,6 @@
 // src/pages/Cadastro.jsx
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Cadastro = () => {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -11,11 +11,19 @@ const Cadastro = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4"> {/* Fundo branco e sem borda */}
-      <h2 className="text-2xl font-semibold text-center mb-6">Faça parte do Complexo</h2>
-
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
+      {" "}
+      {/* Fundo branco e sem borda */}
+      <h2 className="text-2xl font-semibold text-center mb-6">
+        Faça parte do Complexo
+      </h2>
       <form className="w-full max-w-md">
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Nome do Estúdio/Tatuador:</label>
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Nome do Estúdio/Tatuador:
+        </label>
         <input
           type="text"
           id="name"
@@ -23,7 +31,12 @@ const Cadastro = () => {
           required
         />
 
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">E-mail:</label>
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          E-mail:
+        </label>
         <input
           type="email"
           id="email"
@@ -31,7 +44,12 @@ const Cadastro = () => {
           required
         />
 
-        <label htmlFor="portfolio" className="block text-sm font-medium text-gray-700 mb-1">Upload de Fotos para o Portfólio:</label>
+        <label
+          htmlFor="portfolio"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Upload de Fotos para o Portfólio:
+        </label>
         <input
           type="file"
           id="portfolio"
@@ -51,7 +69,12 @@ const Cadastro = () => {
           ))}
         </div>
 
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Senha:</label>
+        <label
+          htmlFor="password"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Senha:
+        </label>
         <input
           type="password"
           id="password"
@@ -59,7 +82,12 @@ const Cadastro = () => {
           required
         />
 
-        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">Confirma senha:</label>
+        <label
+          htmlFor="confirmPassword"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Confirma senha:
+        </label>
         <input
           type="password"
           id="confirmPassword"
@@ -68,14 +96,26 @@ const Cadastro = () => {
         />
 
         <div className="flex items-center mb-4">
-          <input type="checkbox" id="terms" className="h-4 w-4 text-gray-600" required />
+          <input
+            type="checkbox"
+            id="terms"
+            className="h-4 w-4 text-gray-600"
+            required
+          />
           <label htmlFor="terms" className="ml-2 text-sm text-gray-700">
-            aceito os <a href="/termos" className="text-gray-500 underline">termos de uso</a> da plataforma
+            aceito os{" "}
+            <a href="/termos" className="text-gray-500 underline">
+              termos de uso
+            </a>{" "}
+            da plataforma
           </label>
         </div>
 
         <div className="text-center mb-4">
-          <Link to="/iniciar-sessao" className="text-sm text-gray-500 hover:underline">
+          <Link
+            to="/iniciar-sessao"
+            className="text-sm text-gray-500 hover:underline"
+          >
             já tem uma conta? faça login
           </Link>
         </div>
