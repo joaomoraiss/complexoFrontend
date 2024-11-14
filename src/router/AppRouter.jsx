@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from '../components/Navbar';
@@ -8,7 +7,8 @@ import Nos from '../pages/Nos';
 import JuntaSe from '../pages/JuntaSe';
 import Contato from '../pages/Contato';
 import Login from '../pages/Login';
-import Cadastro from '../pages/Cadastro'; 
+import Cadastro from '../pages/Cadastro';
+import CasaAlfaia from '../pages/CasaAlfaia'; // Importa a nova página
 import Footer from '../components/Footer';
 
 const AppRouter = () => {
@@ -22,7 +22,8 @@ const AppRouter = () => {
         <Route path="/junta-se" element={<JuntaSe />} />
         <Route path="/contato" element={<Contato />} />
         <Route path="/iniciar-sessao" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} /> 
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/casa-alfaia" element={<CasaAlfaia />} /> 
       </Routes>
       <Footer />
     </Router>
@@ -30,6 +31,7 @@ const AppRouter = () => {
 };
 
 export default AppRouter;
+
 
 
 
