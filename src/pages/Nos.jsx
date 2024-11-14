@@ -1,5 +1,5 @@
 // src/pages/Nos.jsx
-import React from 'react';
+import React from "react";
 
 const Nos = () => {
   return (

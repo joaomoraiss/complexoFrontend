@@ -1,11 +1,14 @@
-
-import React from 'react';
+import React from "react";
 
 const Newsletter = () => {
   return (
     <div className="max-w-3xl mx-auto border border-gray-300 p-6 mt-16">
       <h2 className="text-lg font-semibold text-gray-600 mb-2">NEWSLETTER</h2>
-      <p className="text-sm text-gray-500">Se você quer ficar por dentro.<br />Deixa seu e-mail abaixo:</p>
+      <p className="text-sm text-gray-500">
+        Se você quer ficar por dentro.
+        <br />
+        Deixa seu e-mail abaixo:
+      </p>
       <div className="mt-4 flex">
         <input
           type="email"
@@ -21,4 +24,3 @@ const Newsletter = () => {
 };
 
 export default Newsletter;
-
