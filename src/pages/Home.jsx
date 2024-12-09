@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import backgroundImage from "../assets/teste1.jpg";
 import Carousel from "../components/Carousel";
 import Newsletter from "../components/Newsletter";
+import video1 from "../assets/video2.mp4";
 
 const Home = () => {
   const [showText, setShowText] = useState(false);
@@ -17,10 +17,19 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div
-        className="relative w-full h-[400px] md:h-[600px] lg:h-[700px] bg-cover bg-center"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
-      >
+      {/* Vídeo de fundo */}
+      <div className="relative w-full h-[400px] md:h-[600px] lg:h-[700px]">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+        >
+          <source src={video1} type="video/mp4" />
+          Seu navegador não suporta vídeos.
+        </video>
+
+        {/* Texto sobreposto ao vídeo */}
         <div
           className={`absolute text-center text-white transition-opacity duration-700 ${
             showText ? "opacity-100" : "opacity-0"
@@ -46,10 +55,12 @@ const Home = () => {
         </div>
       </div>
 
+      {/* Carousel */}
       <div className="mt-16 mb-16">
         <Carousel />
       </div>
 
+      {/* Newsletter */}
       <div className="mt-20 mb-20">
         <Newsletter />
       </div>
