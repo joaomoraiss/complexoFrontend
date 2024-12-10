@@ -41,7 +41,7 @@ const Login = () => {
               to="/esqueci-senha"
               className="text-sm text-gray-500 hover:underline"
             >
-              esqueci a senha
+              Esqueci a senha
             </Link>
           </div>
 
@@ -50,7 +50,7 @@ const Login = () => {
               to="/cadastro"
               className="text-sm text-gray-500 hover:underline"
             >
-              não tem uma conta? cadastre-se
+              Não tem uma conta? Cadastre-se
             </Link>
           </div>
 
