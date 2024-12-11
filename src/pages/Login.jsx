@@ -9,7 +9,6 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  // Usando o contexto
   const { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
@@ -21,14 +20,17 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        // Atualiza o estado global de autenticação
         login(email);
         navigate("/");
         console.log("Login feito com sucesso!");
       }
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setErrorMessage("E-mail ou senha incorretos. Tente novamente.");
+      } else {
+        setErrorMessage("Ocorreu um erro ao fazer login. Tente novamente.");
+      }
       console.error("Erro ao fazer login:", error);
-      setErrorMessage("Credenciais inválidas. Tente novamente.");
     }
   };
 

@@ -1,32 +1,70 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Cadastro = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate(); // Hook para navegação
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verificando se as senhas são iguais
     if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
+      setErrorMessage("As senhas não coincidem!");
       return;
     }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setErrorMessage("E-mail inválido!");
+      return;
+    }
+    if (password.length < 6) {
+      setErrorMessage("A senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+    console.log({
+      email: email,
+      password: password,
+      role: "STUDIO",
+      nomeEstudio: name
+    });
 
-    // Salvar os dados do usuário no localStorage
-    localStorage.setItem("user", JSON.stringify({ name, email }));
+    try {
+      const response = await axios.post("http://localhost:8080/auth/register", {
+        email: email,
+        password: password,
+        role: "STUDIO",  
+        nomeEstudio: name
+      },{
+        headers: {
+          'Content-Type': 'application/json', 
+        }
+    });
 
-    // Redirecionar para a HomePrivate com o nome do usuário na URL
-    navigate(`/home-private/${name}`);
+      if (response.status === 200) {
+        setSuccessMessage("Cadastro realizado com sucesso!");
+        setTimeout(() => navigate("/iniciar-sessao"), 2000); 
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      setErrorMessage(
+        error.response?.data?.message || "Erro ao realizar o cadastro. Tente novamente."
+      );
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
       <h2 className="text-2xl font-semibold text-center mb-6">Faça parte do Complexo</h2>
+
+      {errorMessage && <div className="mb-4 text-red-500 text-center">{errorMessage}</div>}
+      {successMessage && <div className="mb-4 text-green-500 text-center">{successMessage}</div>}
+
       <form className="w-full max-w-md" onSubmit={handleSubmit}>
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
           Nome do Estúdio/Tatuador:
@@ -78,19 +116,19 @@ const Cadastro = () => {
 
         <div className="flex items-center justify-center mb-4">
           <input
-          type="checkbox"
-          id="terms"
-          className="h-4 w-4 text-gray-600"
-          required
-        />
+            type="checkbox"
+            id="terms"
+            className="h-4 w-4 text-gray-600"
+            required
+          />
           <label htmlFor="terms" className="ml-2 text-sm text-gray-700">
-          Aceito os {" "}
-          <a href="/termos" className="text-blue-500 underline">
-          termos de uso
-          </a>{" "}
-          da plataforma
-        </label>
-      </div>
+            Aceito os{" "}
+            <a href="/termos" className="text-blue-500 underline">
+              termos de uso
+            </a>{" "}
+            da plataforma
+          </label>
+        </div>
 
         <div className="text-center mb-4">
           <Link
@@ -113,5 +151,3 @@ const Cadastro = () => {
 };
 
 export default Cadastro;
-
-
