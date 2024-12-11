@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 
 const HomePrivate = () => {
-  const { username } = useParams(); // Obtendo o nome de usuário da URL
+  const { username } = useParams(); 
 
   const [studioName, setStudioName] = useState("");
   const [logo, setLogo] = useState(null);
@@ -13,7 +13,7 @@ const HomePrivate = () => {
   const [instagramLink, setInstagramLink] = useState("");
   const [artists, setArtists] = useState([]);
 
-  // Função para adicionar um novo artista
+  
   const addArtist = () => {
     if (artists.length < 10) {
       setArtists([...artists, { name: "", photos: [] }]);
@@ -22,17 +22,16 @@ const HomePrivate = () => {
     }
   };
 
-  // Função para atualizar o nome do artista
+  
   const handleArtistNameChange = (index, value) => {
     const updatedArtists = [...artists];
     updatedArtists[index].name = value;
     setArtists(updatedArtists);
   };
-
-  // Função para adicionar fotos para um artista
+  
   const handleArtistPhotoUpload = (index, files) => {
     const updatedArtists = [...artists];
-    updatedArtists[index].photos = Array.from(files).slice(0, 5); // Limite de 5 fotos
+    updatedArtists[index].photos = Array.from(files).slice(0, 5); 
     setArtists(updatedArtists);
   };
 
@@ -46,7 +45,6 @@ const HomePrivate = () => {
       </p>
 
       <form className="w-full max-w-3xl bg-white p-6 rounded-lg shadow-md">
-        {/* Nome do Estúdio */}
         <div className="mb-4">
           <label htmlFor="studioName" className="block text-gray-700 font-medium mb-2">
             Nome do Estúdio:
@@ -60,7 +58,6 @@ const HomePrivate = () => {
           />
         </div>
 
-        {/* Adicionar logomarca */}
         <div className="mb-4">
           <label htmlFor="logo" className="block text-gray-700 font-medium mb-2">
             Adicionar Logomarca:
@@ -74,7 +71,6 @@ const HomePrivate = () => {
           />
         </div>
 
-        {/* Descrição */}
         <div className="mb-4">
           <label htmlFor="description" className="block text-gray-700 font-medium mb-2">
             Descrição:

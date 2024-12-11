@@ -35,7 +35,7 @@ const Cadastro = () => {
     });
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/register", {
+      const response = await axios.post("https://complexobackend.onrender.com/auth/register", {
         email: email,
         password: password,
         role: "STUDIO",  

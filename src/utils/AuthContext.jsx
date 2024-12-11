@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   const fetchStudioDetails = async (email) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/usuarios/email/${email}`
+        `https://complexobackend.onrender.com/usuarios/email/${email}`
       );
       if (response.status === 200) {
         setStudioName(response.data.studioName);
