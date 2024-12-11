@@ -6,21 +6,18 @@ const JuntaSe = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate(); // Hook para navegação
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Verificando se as senhas são iguais
     if (password !== confirmPassword) {
       alert("As senhas não coincidem!");
       return;
     }
 
-    // Salvar os dados do usuário no localStorage
     localStorage.setItem("user", JSON.stringify({ name, email }));
 
-    // Redirecionar para a HomePrivate com o nome do usuário na URL
     navigate(`/home-private/${name}`);
   };
 

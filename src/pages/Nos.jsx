@@ -1,5 +1,5 @@
 import React from "react";
-import { FaGithub } from "react-icons/fa"; // Importando o ícone do GitHub
+import { FaGithub } from "react-icons/fa"; 
 
 const Nos = () => {
   const teamMembers = [

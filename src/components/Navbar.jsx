@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import logo from "../assets/logoComplexo.png";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { AuthContext } from "../utils/AuthContext";
+import logo from "../assets/logoComplexo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, studioName, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 640) setIsMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const handleLogout = () => {
+    logout();
+    navigate("/iniciar-sessao");
+  };
 
   const linkHoverEffect =
     "relative text-base font-light before:absolute before:top-full before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-300 hover:before:w-full";
@@ -52,12 +52,34 @@ const Navbar = () => {
         </Link>
       </div>
 
-      <Link
-        to="/iniciar-sessao"
-        className={`${linkHoverEffect} hidden sm:block`}
-      >
-        INICIAR SESSÃO
-      </Link>
+      {!isAuthenticated ? (
+        <Link
+          to="/iniciar-sessao"
+          className={`${linkHoverEffect} hidden sm:block`}
+        >
+          INICIAR SESSÃO
+        </Link>
+      ) : (
+        <div className="mt-4 flex flex-col items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <span className="text-lg font-medium text-black">
+            Olá, {studioName || "Usuário"}
+          </span>
+          <button
+            onClick={handleLogout}
+            className="pt-0 relative inline-flex text-black text-xs px-4 py-1.5 rounded-md hover: overflow-hidden group"
+          >
+            {Array.from("Sair").map((letter, index) => (
+              <span
+                key={index}
+                className="inline-block transition-colors duration-300 group-hover:text-red-500"
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                {letter}
+              </span>
+            ))}
+          </button>
+        </div>
+      )}
     </header>
   );
 };
