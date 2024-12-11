@@ -1,55 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import logo from "../assets/logoComplexo.png";
 import { RxHamburgerMenu } from "react-icons/rx";
+import { AuthContext } from "../utils/AuthContext";
+import logo from "../assets/logoComplexo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [studioName, setStudioName] = useState("");
+  const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  useEffect(() => {
-    // Verifica se o email está salvo no localStorage
-    const email = localStorage.getItem("email");
-    if (email) {
-      setIsAuthenticated(true);
-      fetchStudioDetails(email);
-    }
-
-    const handleResize = () => {
-      if (window.innerWidth > 640) setIsMenuOpen(false);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const fetchStudioDetails = async (email) => {
-    try {
-      const response = await axios.get(`http://localhost:8080/usuarios/email/${email}`);
-      if (response.status === 200) {
-        setStudioName(response.data.studioName); 
-      }
-    } catch (error) {
-      console.error("Erro ao buscar detalhes do estúdio:", error);
-      setStudioName("Usuário");
-    }
+    setIsMenuOpen((prevState) => !prevState);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("email"); 
-    setIsAuthenticated(false);
-    navigate("/iniciar-sessao"); 
+    logout();
+    navigate("/iniciar-sessao");
   };
 
   const linkHoverEffect =
     "relative text-base font-light before:absolute before:top-full before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-300 hover:before:w-full";
-  
+
   return (
     <header className="sticky top-0 left-0 w-full shadow-md px-[15%] py-2.5 bg-white text-black flex items-center justify-between z-50">
       <Link to="/" className="logo mt-[-4px] mb-[-10px]">
@@ -82,17 +53,30 @@ const Navbar = () => {
       </div>
 
       {!isAuthenticated ? (
-        <Link to="/iniciar-sessao" className={`${linkHoverEffect} hidden sm:block`}>
+        <Link
+          to="/iniciar-sessao"
+          className={`${linkHoverEffect} hidden sm:block`}
+        >
           INICIAR SESSÃO
         </Link>
       ) : (
-        <div className="flex flex-col items-center space-x-4">
-          <span className="text-lg">Olá, {studioName}</span>
+        <div className="mt-4 flex flex-col items-center space-y-2 sm:space-y-0 sm:space-x-4">
+          <span className="text-lg font-medium text-black">
+            Olá, {studioName || "Usuário"}
+          </span>
           <button
             onClick={handleLogout}
-            className="red-600 text-xs px-4 py-1.5 rounded-md hover:bg-red-500"
+            className="pt-0 relative inline-flex text-black text-xs px-4 py-1.5 rounded-md hover: overflow-hidden group"
           >
-            ENCERRAR SESSÃO
+            {Array.from("Sair").map((letter, index) => (
+              <span
+                key={index}
+                className="inline-block transition-colors duration-300 group-hover:text-red-500"
+                style={{ transitionDelay: `${index * 50}ms` }}
+              >
+                {letter}
+              </span>
+            ))}
           </button>
         </div>
       )}

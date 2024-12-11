@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../utils/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+
+  // Usando o contexto
+  const { login } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,9 +21,10 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        localStorage.setItem("email", email);
+        // Atualiza o estado global de autenticação
+        login(email);
         navigate("/");
-        console.log("Login feito com sucesso!")
+        console.log("Login feito com sucesso!");
       }
     } catch (error) {
       console.error("Erro ao fazer login:", error);
@@ -33,6 +38,10 @@ const Login = () => {
         <h2 className="text-2xl font-semibold text-center mb-6">
           INICIAR SESSÃO
         </h2>
+
+        {errorMessage && (
+          <div className="mb-4 text-red-500 text-center">{errorMessage}</div>
+        )}
 
         <form onSubmit={handleLogin}>
           <label
