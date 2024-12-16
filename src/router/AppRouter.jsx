@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Home from '../pages/HomePublic';
 import Sobre from '../pages/Sobre';
@@ -11,6 +11,8 @@ import Cadastro from '../pages/Cadastro';
 import HomePrivate from '../pages/HomePrivate'; 
 import CasaAlfaia from '../pages/CasaAlfaia';
 import Footer from '../components/Footer';
+import Alysson from '../artists/Alysson';
+import Biana from '../artists/Biana';
 
 const AppRouter = () => {
   return (
@@ -25,7 +27,9 @@ const AppRouter = () => {
         <Route path="/iniciar-sessao" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/home-private/:username" element={<HomePrivate />} /> 
-        <Route path="/casa-alfaia" element={<CasaAlfaia />} />
+        <Route path="/casa-alfaia" element={<CasaAlfaia />} />  
+        <Route path="../artists/alysson" element={<Alysson />} />
+        <Route path="../artists/biana" element={<Biana />} />      
       </Routes>
       <Footer />
     </Router>
