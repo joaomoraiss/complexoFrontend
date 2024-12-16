@@ -14,6 +14,7 @@ import CasaAlfaia from '../pages/CasaAlfaia';
 import Footer from '../components/Footer';
 import Alysson from '../artists/Alysson';
 import Biana from '../artists/Biana';
+import Agendamento from '../pages/agendamento';
 
 const AppRouter = () => {
   return (
@@ -31,7 +32,9 @@ const AppRouter = () => {
         <Route path="/home-private/:username" element={<HomePrivate />} /> 
         <Route path="/casa-alfaia" element={<CasaAlfaia />} />  
         <Route path="../artists/alysson" element={<Alysson />} />
-        <Route path="../artists/biana" element={<Biana />} />      
+        <Route path="../artists/biana" element={<Biana />} />     
+        <Route path="/agendamento" element={<Agendamento/>} />
+
       </Routes>
       <Footer />
     </Router>

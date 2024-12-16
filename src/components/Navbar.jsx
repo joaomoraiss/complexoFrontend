@@ -53,6 +53,9 @@ const Navbar = () => {
         <Link to="/artistas" className={linkHoverEffect}>
           ARTISTAS
         </Link>
+        <Link to="/agendamento" className={linkHoverEffect}>
+          AGENDAMENTO
+        </Link>
       </div>
 
       {!isAuthenticated ? (
