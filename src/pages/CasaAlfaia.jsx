@@ -112,7 +112,11 @@ const CasaAlfaia = () => {
           {artists.map((artist, index) => (
             <div key={index} className="flex flex-col items-center">
               <img src={artist.image} alt={artist.name} className="w-24 h-24 rounded-full object-cover" />
-              <p className="text-center mt-2">{artist.name}</p>
+              <p className="text-center mt-2">{/*{artist.name}*/}
+              <Link to={`/artists/${artist.name}`} className="hover:underline">
+                  {artist.name}
+                </Link>
+              </p>
             </div>
           ))}
         </Carousel>
@@ -162,6 +166,11 @@ const CasaAlfaia = () => {
             <p className="font-bold">JÚLIA OLIVEIRA SANTINO</p>
             <p className="text-yellow-500">★★★★★</p>
             <p>Amei! Pretendo voltar mais vezes.</p>
+          </div>
+          <div className="p-4 border border-gray-300 rounded-lg w-1/2">
+            <p className="font-bold">CAIO DUTRA</p>
+            <p className="text-yellow-500">★★★★★</p>
+            <p>Perfeito! Ótimos profissionais e espaço.</p>
           </div>
         </div>
       </div>
