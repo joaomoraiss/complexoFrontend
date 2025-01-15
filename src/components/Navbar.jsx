@@ -18,8 +18,13 @@ const Navbar = () => {
     navigate("/iniciar-sessao");
   };
 
-  const linkHoverEffect =
-    "relative text-base font-light before:absolute before:top-full before:left-0 before:w-0 before:h-[2px] before:bg-black before:transition-all before:duration-300 hover:before:w-full";
+  const linkHoverEffect = `
+  relative text-base font-light 
+  before:absolute before:top-full before:left-0 before:w-0 
+  before:h-[2px] before:bg-black before:transition-all 
+  before:duration-300 hover:before:w-full
+`;
+   
 
   return (
     <header className="sticky top-0 left-0 w-full shadow-md px-[15%] py-2.5 bg-white text-black flex items-center justify-between z-50">
