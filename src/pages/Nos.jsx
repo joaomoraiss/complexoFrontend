@@ -1,34 +1,34 @@
 import React from "react";
-import { FaGithub } from "react-icons/fa"; 
+import { FaGithub } from "react-icons/fa";
 
 const Nos = () => {
   const teamMembers = [
     {
-      photo: "src/assets/integrantes/Breno.png",
+      photo: "/assets/integrantes/Breno.png",
       name: "Breno Fernandes",
       role: "Backend Developer",
       github: "https://github.com/breno-fernandes1",
     },
     {
-      photo: "src/assets/integrantes/Caio.png",
+      photo: "/assets/integrantes/Caio.png",
       name: "Caio Roberto",
       role: "Backend Developer",
       github: "https://github.com/CaioRD",
     },
     {
-      photo: "src/assets/integrantes/Céu.jpg",
+      photo: "/assets/integrantes/Céu.jpg",
       name: "Céu de Nascimento",
       role: "Engineer Software",
       github: "https://github.com/ceudenascimento",
     },
     {
-      photo: "src/assets/integrantes/Jeff.png",
+      photo: "/assets/integrantes/Jeff.png",
       name: "Jefferson Marques",
       role: "Front-end Developer",
       github: "https://github.com/jeffmqs",
     },
     {
-      photo: "src/assets/integrantes/João.png",
+      photo: "/assets/integrantes/João.png",
       name: "João Morais",
       role: "Full-Stack Developer",
       github: "https://github.com/joaomoraiss",
