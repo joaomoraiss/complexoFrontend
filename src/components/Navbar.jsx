@@ -6,11 +6,16 @@ import logo from "../assets/logoComplexo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsMenuOpen((prevState) => !prevState);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
   };
 
   const handleLogout = () => {
@@ -19,12 +24,11 @@ const Navbar = () => {
   };
 
   const linkHoverEffect = `
-  relative text-base font-light 
-  before:absolute before:top-full before:left-0 before:w-0 
-  before:h-[2px] before:bg-black before:transition-all 
-  before:duration-300 hover:before:w-full
-`;
-   
+    relative text-base font-light 
+    before:absolute before:top-full before:left-0 before:w-0 
+    before:h-[2px] before:bg-black before:transition-all 
+    before:duration-300 hover:before:w-full
+  `;
 
   return (
     <header className="sticky top-0 left-0 w-full shadow-md px-[15%] py-2.5 bg-white text-black flex items-center justify-between z-50">
@@ -40,27 +44,58 @@ const Navbar = () => {
         className={`${
           isMenuOpen
             ? "flex flex-col items-center absolute top-[5rem] left-0 w-full bg-white py-4 z-40 border-t border-gray-300"
-            : "hidden sm:flex space-x-[60px]"
+            : "hidden sm:flex space-x-[40px]"
         }`}
       >
         <Link to="/sobre" className={linkHoverEffect}>
           SOBRE
         </Link>
-        <Link to="/nos" className={linkHoverEffect}>
-          NÓS
-        </Link>
         <Link to="/junta-se" className={linkHoverEffect}>
           JUNTAR-SE
-        </Link>
-        <Link to="/contato" className={linkHoverEffect}>
-          CONTATO
         </Link>
         <Link to="/artistas" className={linkHoverEffect}>
           ARTISTAS
         </Link>
         <Link to="/agendamento" className={linkHoverEffect}>
-          AGENDAMENTO
+          AGENDAR
         </Link>
+
+        <div className="relative">
+          <button
+            onClick={toggleDropdown}
+            className={`${linkHoverEffect} focus:outline-none`}
+          >
+            MAIS
+          </button>
+          {isDropdownOpen && (
+            <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+              <Link
+                to="/assistente-virtual"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Assistente Virtual
+              </Link>
+              <Link
+                to="/contato"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Contato
+              </Link>
+              <Link
+                to="/nos"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Nós
+              </Link>
+              <Link
+                to="/redes-sociais"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Redes Sociais
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
 
       {!isAuthenticated ? (
