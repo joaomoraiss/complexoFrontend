@@ -9,6 +9,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  
 
   const toggleMenu = () => {
     setIsMenuOpen((prevState) => !prevState);
@@ -60,41 +61,42 @@ const Navbar = () => {
           AGENDAR
         </Link>
 
-        <div className="relative">
-          <button
-            onClick={toggleDropdown}
-            className={`${linkHoverEffect} focus:outline-none`}
+        <div 
+        className="relative"
+        onMouseEnter={() => setIsDropdownOpen(true)}
+        onMouseLeave={() => setIsDropdownOpen(false)}
+        >
+          <button className={`${linkHoverEffect} focus:outline-none`}>
+        MAIS
+      </button>
+      {isDropdownOpen && (
+        <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+          <Link
+            to="/assistente-virtual"
+            className="block px-4 py-2 text-sm hover:bg-gray-100"
           >
-            MAIS
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
-              <Link
-                to="/assistente-virtual"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-              >
-                Assistente Virtual
-              </Link>
-              <Link
-                to="/contato"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-              >
-                Contato
-              </Link>
-              <Link
-                to="/nos"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-              >
-                Nós
-              </Link>
-              <Link
-                to="/redes-sociais"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-              >
-                Redes Sociais
-              </Link>
-            </div>
-          )}
+            Assistente Virtual
+          </Link>
+          <Link
+            to="/contato"
+            className="block px-4 py-2 text-sm hover:bg-gray-100"
+          >
+            Contato
+          </Link>
+          <Link
+            to="/nos"
+            className="block px-4 py-2 text-sm hover:bg-gray-100"
+          >
+            Nós
+          </Link>
+          <Link
+            to="/redes-sociais"
+            className="block px-4 py-2 text-sm hover:bg-gray-100"
+          >
+            Redes Sociais
+          </Link>
+        </div>
+      )}          
         </div>
       </div>
 
