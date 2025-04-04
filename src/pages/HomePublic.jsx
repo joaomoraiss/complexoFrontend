@@ -79,6 +79,7 @@ const Home = () => {
               className={`inline-block ${
                 animateHero ? 'animate-slideInLeftText delay-300' : ''
               } px-6 py-3 bg-black bg-opacity-90 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300`}
+              onClick={() => navigate('/sobre')}
             >
               Saiba mais
             </button>

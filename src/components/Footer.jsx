@@ -1,6 +1,7 @@
 // src/components/Footer.jsx
 import React from "react";
 import { FaInstagram, FaFacebook, FaTwitter, FaTypo3 } from "react-icons/fa";
+import { AiOutlineX } from "react-icons/ai";
 
 
 const Footer = () => {
@@ -34,7 +35,7 @@ const Footer = () => {
           <FaFacebook className="text-black text-2xl hover:text-gray-700" />
         </a>
         <a href="https://x.com" target="_blank" rel="noopener noreferrer">
-          <FaTwitter className="text-black text-2xl hover:text-gray-700" />
+          <AiOutlineX className="text-black text-2xl hover:text-gray-700" />
           {/* nao achei o icone do X no repositorio */}
         </a>
       </div>
