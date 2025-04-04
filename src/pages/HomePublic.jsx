@@ -5,8 +5,10 @@ import Newsletter from "../components/Newsletter";
 import bannerImage from "../assets/casaalfaia.svg";
 import image2 from "../assets/image2.jpeg";
 import image3 from "../assets/image3.jpeg";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+  const navigate = useNavigate();
   const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5, triggerOnce: false });
   const { ref: section2Ref, inView: section2InView } = useInView({ threshold: 0.1, triggerOnce: false });
   const { ref: section3Ref, inView: section3InView } = useInView({ threshold: 0.1, triggerOnce: false });
@@ -122,7 +124,9 @@ const Home = () => {
       <p className="text-sm md:text-base mb-6 max-w-[85%] leading-relaxed text-justify">
         Solicite um orçamento <br /> e agende sua Tattoo
       </p>
-      <button className="px-6 py-3 bg-white text-black rounded hover:bg-gray-500 transition-colors">
+      <button className="px-6 py-3 bg-white text-black rounded hover:bg-gray-500 transition-colors"
+        onClick={() => navigate('/agendamento')}
+      >
         Agendar
       </button>
     </div>

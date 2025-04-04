@@ -15,7 +15,6 @@ import Footer from '../components/Footer';
 import Alysson from '../artists/Alysson';
 import Biana from '../artists/Biana';
 import Agendamento from '../pages/agendamento';
-import AssistenteVirtual from '../pages/AssistenteVirtual';
 import RedesSociais from '../pages/RedesSociais';
 
 const AppRouter = () => {
@@ -35,8 +34,7 @@ const AppRouter = () => {
         <Route path="/casa-alfaia" element={<CasaAlfaia />} />  
         <Route path="../artists/alysson" element={<Alysson />} />
         <Route path="../artists/biana" element={<Biana />} />     
-        <Route path="/agendamento" element={<Agendamento/>} />
-        <Route path="/assistente-virtual" element={<AssistenteVirtual />} />
+        <Route path="/agendamento" element={<Agendamento/>} />        
         <Route path="/redes-sociais" element={<RedesSociais />} />
 
       </Routes>
