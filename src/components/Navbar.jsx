@@ -71,12 +71,7 @@ const Navbar = () => {
       </button>
       {isDropdownOpen && (
         <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
-          <Link
-            to="/assistente-virtual"
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Assistente Virtual
-          </Link>
+          
           <Link
             to="/contato"
             className="block px-4 py-2 text-sm hover:bg-gray-100"
