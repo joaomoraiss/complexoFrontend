@@ -5,6 +5,7 @@ import Newsletter from "../components/Newsletter";
 import bannerImage from "../assets/casaalfaia.svg";
 import image2 from "../assets/image2.jpeg";
 import image3 from "../assets/image3.jpeg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5, triggerOnce: false });
@@ -73,14 +74,17 @@ const Home = () => {
 
           {/* Botão */}
           <div className="mt-6 overflow-hidden">
-            <button
-              className={`inline-block ${
-                animateHero ? 'animate-slideInLeftText delay-300' : ''
-              } px-6 py-3 bg-black bg-opacity-90 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300`}
-            >
-              Saiba mais
-            </button>
-          </div>
+  <Link to="/sobre">
+    <button
+      className={`inline-block ${
+        animateHero ? 'animate-slideInLeftText delay-300' : ''
+      } px-6 py-3 bg-black bg-opacity-95 text-white rounded-lg 
+      hover:bg-white hover:text-black transition-colors duration-300`}
+    >
+      Saiba mais
+    </button>
+  </Link>
+</div>
         </div>
       </section>
 
@@ -122,9 +126,13 @@ const Home = () => {
       <p className="text-sm md:text-base mb-6 max-w-[85%] leading-relaxed text-justify">
         Solicite um orçamento <br /> e agende sua Tattoo
       </p>
-      <button className="px-6 py-3 bg-white text-black rounded hover:bg-gray-500 transition-colors">
-        Agendar
-      </button>
+
+      <Link to="/agendamento">
+      <button className="px-6 py-3 bg-white text-black rounded hover:bg-gray-600 hover:text-white transition-colors duration-300">
+      Agendar
+     </button>
+     </Link>
+
     </div>
   </div>
   {/* Imagem apenas no desktop (não ocupa espaço no mobile) */}

@@ -45,7 +45,7 @@ const Navbar = () => {
         className={`${
           isMenuOpen
             ? "flex flex-col items-center absolute top-[5rem] left-0 w-full bg-white py-4 z-40 border-t border-gray-300"
-            : "hidden sm:flex space-x-[40px]"
+            : "hidden sm:flex space-x-[55px]"
         }`}
       >
         <Link to="/sobre" className={linkHoverEffect}>
