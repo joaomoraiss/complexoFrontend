@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { gapi } from "gapi-script";
 
+const CLIENT_ID = "1023345179954-bl64qi03ojpgdm57k97a5sjoaf7f9guk.apps.googleusercontent.com";
+const SCOPES = "https://www.googleapis.com/auth/calendar.events";
 
 const Agendamento = () => {
   const [formData, setFormData] = useState({
-    studio: '',
-    tatuador: '',
-    data: '',
-    hora: '',
-    descricao: ''
+    studio: "",
+    tatuador: "",
+    data: "",
+    hora: "",
+    descricao: "",
   });
 
   const studios = ["Studio Canoa", "Casa Alfaia", "Borcelle Studio"];
   const tatuadoresPorStudio = {
-    "Studio Canoa": ["Caio Neiva", "Vidal","Lucas"],
-    "Casa Alfaia": ["Alysson", "Biana","Diniz","Cisco","Emanoel"],
-    "Borcelle Studio": ["Márcio", "Junior","Igor"],
+    "Studio Canoa": ["Caio Neiva", "Vidal", "Lucas"],
+    "Casa Alfaia": ["Alysson", "Biana", "Diniz", "Cisco", "Emanoel"],
+    "Borcelle Studio": ["Márcio", "Junior", "Igor"],
   };
+
+  useEffect(() => {
+    const start = () => {
+      gapi.client.init({
+        clientId: CLIENT_ID,
+        scope: SCOPES,
+      });
+    };
+    gapi.load("client:auth2", start);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,25 +38,60 @@ const Agendamento = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Agendamento enviado:', formData);
+    try {
+      const authInstance = gapi.auth2.getAuthInstance();
+      const user = await authInstance.signIn();
+      const isSignedIn = authInstance.isSignedIn.get();
+
+      if (!isSignedIn) throw new Error("Usuário não autenticado");
+
+      const { data, hora, studio, tatuador, descricao } = formData;
+      const startDateTime = `${data}T${hora}:00`;
+      const endDateTime = `${data}T${hora}:59`;
+
+      const event = {
+        summary: `Sessão com ${tatuador} - ${studio}`,
+        description: descricao,
+        start: {
+          dateTime: startDateTime,
+          timeZone: "America/Recife",
+        },
+        end: {
+          dateTime: endDateTime,
+          timeZone: "America/Recife",
+        },
+      };
+
+      const request = gapi.client.calendar.events.insert({
+        calendarId: "primary",
+        resource: event,
+      });
+
+      request.execute((event) => {
+        alert("Agendamento criado no Google Agenda!");
+        console.log("Evento criado:", event);
+      });
+    } catch (err) {
+      console.error("Erro ao criar evento:", err);
+      alert("Erro ao agendar. Verifique a autenticação.");
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mb-12">
         <h1 className="text-2xl font-bold mb-6 text-center">Agendar Sessão</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="studio" className="block text-sm font-medium text-gray-700">Studio</label>
+            <label htmlFor="studio">Studio</label>
             <select
-              id="studio"
               name="studio"
               value={formData.studio}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
+              className="w-full border p-2 rounded"
             >
               <option value="">Selecione um studio</option>
               {studios.map((studio) => (
@@ -53,15 +100,14 @@ const Agendamento = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="tatuador" className="block text-sm font-medium text-gray-700">Tatuador</label>
+            <label htmlFor="tatuador">Tatuador</label>
             <select
-              id="tatuador"
               name="tatuador"
               value={formData.tatuador}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
               disabled={!formData.studio}
+              className="w-full border p-2 rounded"
             >
               <option value="">Selecione um tatuador</option>
               {formData.studio && tatuadoresPorStudio[formData.studio].map((tatuador) => (
@@ -70,50 +116,59 @@ const Agendamento = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="data" className="block text-sm font-medium text-gray-700">Data</label>
+            <label htmlFor="data">Data</label>
             <input
               type="date"
-              id="data"
               name="data"
               value={formData.data}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
+              className="w-full border p-2 rounded"
             />
           </div>
           <div>
-            <label htmlFor="hora" className="block text-sm font-medium text-gray-700">Hora</label>
+            <label htmlFor="hora">Hora</label>
             <input
               type="time"
-              id="hora"
               name="hora"
               value={formData.hora}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               required
+              className="w-full border p-2 rounded"
             />
           </div>
           <div>
-            <label htmlFor="descricao" className="block text-sm font-medium text-gray-700">Descrição</label>
+            <label htmlFor="descricao">Descrição</label>
             <textarea
-              id="descricao"
               name="descricao"
               value={formData.descricao}
               onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
               rows="4"
+              className="w-full border p-2 rounded"
             />
           </div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
           >
             Agendar
           </button>
         </form>
+      </div>
+
+      <div className="w-full max-w-4xl h-[600px]">
+        <iframe
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ24RnYAyUJlwxQf5FBWgFBr_lf_9mQjS137HhCajFInOi9egFxq_Klu1yRBXX6LpPSkfskC9RAe?gv=true"
+          style={{ border: 0 }}
+          width="100%"
+          height="600"
+          frameBorder="0"
+          title="Agendamento Google Agenda"
+        ></iframe>
       </div>
     </div>
   );
 };
 
 export default Agendamento;
+
