@@ -7,14 +7,18 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState(""); // Novo estado para o tipo de usuário
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!role) {
+      setErrorMessage("Selecione o tipo de conta (Cliente ou Estúdio).");
+      return;
+    }
     if (password !== confirmPassword) {
       setErrorMessage("As senhas não coincidem!");
       return;
@@ -27,33 +31,36 @@ const Cadastro = () => {
       setErrorMessage("A senha deve ter pelo menos 6 caracteres.");
       return;
     }
-    console.log({
-      email: email,
-      password: password,
-      role: "STUDIO",
-      nomeEstudio: name
-    });
+
+    const endpoint =
+      role === "STUDIO"
+        ? "http://localhost:8080/auth/register/studio"
+        : "http://localhost:8080/auth/register/cliente";
 
     try {
-      const response = await axios.post("https://complexobackend.onrender.com/auth/register", {
-        email: email,
-        password: password,
-        role: "STUDIO",  
-        nomeEstudio: name
-      },{
-        headers: {
-          'Content-Type': 'application/json', 
+      const response = await axios.post(
+        endpoint,
+        {
+          email: email,
+          password: password,
+          role: role,
+          nomeEstudio: name,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
         }
-    });
+      );
 
       if (response.status === 200) {
         setSuccessMessage("Cadastro realizado com sucesso!");
-        setTimeout(() => navigate("/iniciar-sessao"), 2000); 
+        setTimeout(() => navigate("/iniciar-sessao"), 2000);
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
       setErrorMessage(
-        error.response?.data?.message || "Erro ao realizar o cadastro. Tente novamente."
+        error.response?.data || "Erro ao realizar o cadastro. Tente novamente."
       );
     }
   };
@@ -66,8 +73,33 @@ const Cadastro = () => {
       {successMessage && <div className="mb-4 text-green-500 text-center">{successMessage}</div>}
 
       <form className="w-full max-w-md" onSubmit={handleSubmit}>
+        {/* Seleção de Tipo */}
+        <div className="flex justify-center mb-6">
+          <div className="flex">
+            <button
+              type="button"
+              onClick={() => setRole("CLIENTE")}
+              className={`px-6 py-2 rounded-l-md border border-gray-300 ${
+                role === "CLIENTE" ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-700"
+              } focus:outline-none`}
+            >
+              Cliente
+            </button>
+            <button
+              type="button"
+              onClick={() => setRole("STUDIO")}
+              className={`px-6 py-2 rounded-r-md border border-gray-300 ${
+                role === "STUDIO" ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-700"
+              } focus:outline-none`}
+            >
+              Estúdio
+            </button>
+          </div>
+        </div>
+
+        {/* Inputs */}
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-          Nome do Estúdio/Tatuador:
+          Nome do Estúdio/Cliente
         </label>
         <input
           type="text"
@@ -103,7 +135,7 @@ const Cadastro = () => {
         />
 
         <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-          Confirma senha:
+          Confirme a senha:
         </label>
         <input
           type="password"
