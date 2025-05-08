@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { gapi } from "gapi-script";
-
-const CLIENT_ID = "1023345179954-bl64qi03ojpgdm57k97a5sjoaf7f9guk.apps.googleusercontent.com";
-const SCOPES = "https://www.googleapis.com/auth/calendar.events";
+import React, { useState } from "react";
 
 const Agendamento = () => {
   const [formData, setFormData] = useState({
@@ -20,15 +16,12 @@ const Agendamento = () => {
     "Borcelle Studio": ["Márcio", "Junior", "Igor"],
   };
 
-  useEffect(() => {
-    const start = () => {
-      gapi.client.init({
-        clientId: CLIENT_ID,
-        scope: SCOPES,
-      });
-    };
-    gapi.load("client:auth2", start);
-  }, []);
+  // Mapeamento de link Cal.com por estúdio
+  const calLinks = {
+    "Studio Canoa": "https://cal.com/complexo-tatuagem-arte-calvsc/30min",
+    "Casa Alfaia": "https://cal.com/complexo-tatuagem-arte-calvsc/15min",
+    "Borcelle Studio": "https://cal.com/complexo-tatuagem-arte-calvsc/45min",
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,45 +31,9 @@ const Agendamento = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const authInstance = gapi.auth2.getAuthInstance();
-      const user = await authInstance.signIn();
-      const isSignedIn = authInstance.isSignedIn.get();
-
-      if (!isSignedIn) throw new Error("Usuário não autenticado");
-
-      const { data, hora, studio, tatuador, descricao } = formData;
-      const startDateTime = `${data}T${hora}:00`;
-      const endDateTime = `${data}T${hora}:59`;
-
-      const event = {
-        summary: `Sessão com ${tatuador} - ${studio}`,
-        description: descricao,
-        start: {
-          dateTime: startDateTime,
-          timeZone: "America/Recife",
-        },
-        end: {
-          dateTime: endDateTime,
-          timeZone: "America/Recife",
-        },
-      };
-
-      const request = gapi.client.calendar.events.insert({
-        calendarId: "primary",
-        resource: event,
-      });
-
-      request.execute((event) => {
-        alert("Agendamento criado no Google Agenda!");
-        console.log("Evento criado:", event);
-      });
-    } catch (err) {
-      console.error("Erro ao criar evento:", err);
-      alert("Erro ao agendar. Verifique a autenticação.");
-    }
+    alert("Agendamento iniciado! Selecione o horário no calendário abaixo.");
   };
 
   return (
@@ -110,9 +67,10 @@ const Agendamento = () => {
               className="w-full border p-2 rounded"
             >
               <option value="">Selecione um tatuador</option>
-              {formData.studio && tatuadoresPorStudio[formData.studio].map((tatuador) => (
-                <option key={tatuador} value={tatuador}>{tatuador}</option>
-              ))}
+              {formData.studio &&
+                tatuadoresPorStudio[formData.studio].map((tatuador) => (
+                  <option key={tatuador} value={tatuador}>{tatuador}</option>
+                ))}
             </select>
           </div>
           <div>
@@ -151,24 +109,26 @@ const Agendamento = () => {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700"
           >
-            Agendar
+            Avançar para Calendário
           </button>
         </form>
       </div>
 
-      <div className="w-full max-w-4xl h-[600px]">
-        <iframe
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ24RnYAyUJlwxQf5FBWgFBr_lf_9mQjS137HhCajFInOi9egFxq_Klu1yRBXX6LpPSkfskC9RAe?gv=true"
-          style={{ border: 0 }}
-          width="100%"
-          height="600"
-          frameBorder="0"
-          title="Agendamento Google Agenda"
-        ></iframe>
-      </div>
+      {formData.studio && (
+        <div className="w-full max-w-4xl h-[700px]">
+          <iframe
+            src={calLinks[formData.studio]}
+            style={{ border: 0 }}
+            width="100%"
+            height="700"
+            frameBorder="0"
+            title="Agendamento com Cal.com"
+            allow="camera; microphone; fullscreen; speaker"
+          ></iframe>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Agendamento;
-
