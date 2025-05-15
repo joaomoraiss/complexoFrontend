@@ -14,7 +14,7 @@ import CasaAlfaia from '../pages/CasaAlfaia';
 import Footer from '../components/Footer';
 import Alysson from '../assets/artists/Alysson';
 import Biana from '../assets/artists/Biana';
-import Agendamento from '../pages/agendamento';
+import Agendamento from '../pages/Agendamento';
 import RedesSociais from '../pages/RedesSociais';
 
 const AppRouter = () => {

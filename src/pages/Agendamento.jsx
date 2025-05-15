@@ -33,7 +33,11 @@ const Agendamento = () => {
   };
 
   const iframeLink = itemAdicionado
-    ? "https://cal.com/complexo-tatuagem-arte-calvsc/casa-alfaia-agendamento"
+    ? itemAdicionado.tipo === "artista" && itemAdicionado.nome === "Alysson"
+      ? "https://cal.com/complexo-tatuagem-arte-calvsc/alysson-casa-alfaia"
+      : itemAdicionado.tipo === "estudio" && itemAdicionado.nome === "Casa Alfaia"
+        ? "https://cal.com/complexo-tatuagem-arte-calvsc/casa-alfaia-agendamento"
+        : "https://cal.com/complexo-tatuagem-arte-calvsc/30min"
     : "";
 
   return (
@@ -134,20 +138,18 @@ const Agendamento = () => {
               </div>
             )}
 
-{itemAdicionado && (
-  <div className="mt-6 flex items-center gap-2 text-sm text-black">
-    <button
-      onClick={() => setMostrarIframe(!mostrarIframe)}
-      className="focus:outline-none bg-transparent"
-      title="Abrir calendário"
-    >
-      <FaCalendarAlt className="text-black text-3xl" /> {/* Tamanho ainda maior */}
-    </button>
-    <span>Visualize os dias com horário disponível</span>
-  </div>
-)}
-
-
+            {itemAdicionado && (
+              <div className="mt-6 flex items-center gap-2 text-sm text-black">
+                <button
+                  onClick={() => setMostrarIframe(!mostrarIframe)}
+                  className="focus:outline-none bg-transparent"
+                  title="Abrir calendário"
+                >
+                  <FaCalendarAlt className="text-black text-3xl" />
+                </button>
+                <span>Visualize os dias com horário disponível</span>
+              </div>
+            )}
 
             {mostrarIframe && (
               <div className="mt-6 w-full">
