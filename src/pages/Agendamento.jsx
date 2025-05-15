@@ -33,7 +33,7 @@ const Agendamento = () => {
   };
 
   const iframeLink = itemAdicionado
-    ? "https://cal.com/complexo-tatuagem-arte-calvsc/30min"
+    ? "https://cal.com/complexo-tatuagem-arte-calvsc/casa-alfaia-agendamento"
     : "";
 
   return (
