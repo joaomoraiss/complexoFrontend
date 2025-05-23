@@ -34,8 +34,8 @@ const Cadastro = () => {
 
     const endpoint =
       role === "STUDIO"
-        ? "http://localhost:8080/auth/register/studio"
-        : "http://localhost:8080/auth/register/cliente";
+        ? "https://complexobackend.onrender.com/auth/register/studio"
+        : "https://complexobackend.onrender.com/auth/register/cliente";
 
     try {
       const response = await axios.post(
