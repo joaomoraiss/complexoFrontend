@@ -70,7 +70,7 @@ const Navbar = () => {
         MAIS
       </button>
       {isDropdownOpen && (
-        <div className="absolute mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+        <div className="absolute mt-0 w-48 bg-white shadow-lg rounded-md py-2 z-50">
           
           <Link
             to="/contato"
