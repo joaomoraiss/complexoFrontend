@@ -6,23 +6,24 @@ import logo from "../assets/logoComplexo.png";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState(null); // 'mais', 'usuario' ou null
   const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  
 
   const toggleMenu = () => {
-    setIsMenuOpen((prevState) => !prevState);
+    setIsMenuOpen((prev) => !prev);
   };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
+  const toggleDropdown = (dropdownName) => {
+    setOpenDropdown((prev) => (prev === dropdownName ? null : dropdownName));
   };
 
   const handleLogout = () => {
     logout();
     navigate("/iniciar-sessao");
   };
+
+  const closeDropdown = () => setOpenDropdown(null);
 
   const linkHoverEffect = `
     relative text-base font-light 
@@ -41,6 +42,7 @@ const Navbar = () => {
         <RxHamburgerMenu className="w-8 h-8" />
       </button>
 
+      {/* Links do menu */}
       <div
         className={`${
           isMenuOpen
@@ -61,40 +63,44 @@ const Navbar = () => {
           AGENDAR
         </Link>
 
-        <div 
-        className="relative"
-        onMouseEnter={() => setIsDropdownOpen(true)}
-        onMouseLeave={() => setIsDropdownOpen(false)}
+        {/* Dropdown "Mais" */}
+        <div
+          className="relative"
+          onMouseEnter={() => setOpenDropdown("mais")}
+          onMouseLeave={() => setOpenDropdown(null)}
         >
           <button className={`${linkHoverEffect} focus:outline-none`}>
-        MAIS
-      </button>
-      {isDropdownOpen && (
-        <div className="absolute mt-0 w-48 bg-white shadow-lg rounded-md py-2 z-50">
-          
-          <Link
-            to="/contato"
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Contato
-          </Link>
-          <Link
-            to="/nos"
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Nós
-          </Link>
-          <Link
-            to="/redes-sociais"
-            className="block px-4 py-2 text-sm hover:bg-gray-100"
-          >
-            Redes Sociais
-          </Link>
-        </div>
-      )}          
+            MAIS
+          </button>
+          {openDropdown === "mais" && (
+            <div className="absolute mt-0 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+              <Link
+                to="/contato"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                Contato
+              </Link>
+              <Link
+                to="/nos"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                Nós
+              </Link>
+              <Link
+                to="/redes-sociais"
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+                onClick={closeDropdown}
+              >
+                Redes Sociais
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
+      {/* Dropdown do Usuário */}
       {!isAuthenticated ? (
         <Link
           to="/iniciar-sessao"
@@ -103,24 +109,48 @@ const Navbar = () => {
           INICIAR SESSÃO
         </Link>
       ) : (
-        <div className="mt-4 flex flex-col items-center space-y-2 sm:space-y-0 sm:space-x-4">
-          <span className="text-lg font-medium text-black">
-            Olá, {studioName || "Usuário"}
-          </span>
+        <div className="relative">
           <button
-            onClick={handleLogout}
-            className="pt-0 relative inline-flex text-black text-xs px-4 py-1.5 rounded-md hover: overflow-hidden group"
+            onClick={() => toggleDropdown("usuario")}
+            className="px-4 py-1.5 border border-gray-300 rounded-md hover:bg-gray-100"
           >
-            {Array.from("Sair").map((letter, index) => (
-              <span
-                key={index}
-                className="inline-block transition-colors duration-300 group-hover:text-red-500"
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                {letter}
-              </span>
-            ))}
+            Olá, {studioName || "Usuário"}
           </button>
+
+          {openDropdown === "usuario" && (
+            <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+              <Link
+                to="/perfil-estudio"
+                onClick={closeDropdown}
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Meu Perfil
+              </Link>
+              <Link
+                to="/agendamento"
+                onClick={closeDropdown}
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Meus Agendamentos
+              </Link>
+              <Link
+                to="/casa-alfaia"
+                onClick={closeDropdown}
+                className="block px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Minha Página
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  closeDropdown();
+                }}
+                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+              >
+                Sair
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>
@@ -128,3 +158,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
