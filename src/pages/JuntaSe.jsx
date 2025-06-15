@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 const JuntaSe = () => {
   const [role, setRole] = useState("CLIENTE");
   const [formData, setFormData] = useState({
-    foto: null, // Mapeado para profilePictureBase64 no User
+    foto: null, 
     nome: "",
     endereco: "",
     dataNascimento: "",
@@ -13,7 +13,7 @@ const JuntaSe = () => {
     confirmarSenha: "",
     descricao: "",
     instagram: "",
-    artistas: [], // Mapeado para artistStudio no User
+    artistas: [], 
   });
 
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ const JuntaSe = () => {
   const handleArtistPhotoUpload = async (index, files) => {
     const newArtists = [...formData.artistas];
     const base64Files = await Promise.all(Array.from(files).slice(0, 5).map(toBase64));
-    newArtists[index].fotos = base64Files; // Mapeado para artistImages no Artist
+    newArtists[index].fotos = base64Files;
     setFormData((prev) => ({ ...prev, artistas: newArtists }));
   };
 
@@ -67,17 +67,15 @@ const JuntaSe = () => {
       return;
     }
 
-    // Objeto base para o usuário, com os nomes dos campos do Spring Boot
     const userPayload = {
-      profilePictureBase64: formData.foto, // Mapeado do React 'foto' para o Spring Boot 'profilePictureBase64'
+      profilePictureBase64: formData.foto,
       studioName: formData.nome,
       studioAdress: formData.endereco,
       studioEmail: formData.email,
       studioPassword: formData.senha,
-      role: role, // Enviando 'CLIENTE' ou 'STUDIO'
+      role: role,
     };
 
-    // Adicionando campos específicos para STUDIO
     if (role === "STUDIO") {
       userPayload.studioDescription = formData.descricao;
       userPayload.studioInstagram = formData.instagram;
@@ -85,20 +83,12 @@ const JuntaSe = () => {
         artistName: artist.nome,
         artistStyle: artist.estilo,
         artistDescription: artist.descricao,
-        instagramLink: artist.instagram, // Mapeado do React 'instagram' para o Spring Boot 'instagramLink'
-        artistImages: artist.fotos, // Mapeado do React 'fotos' para o Spring Boot 'artistImages'
+        instagramLink: artist.instagram,
+        artistImages: artist.fotos,
       }));
     }
-    // Opcional: Adicionar dataNascimento se o User do Spring Boot for ter esse campo para clientes
-    // if (role === "CLIENTE") {
-    //    userPayload.dateOfBirth = formData.dataNascimento;
-    // }
 
     try {
-      // ----------------------------------------------------
-      // CORREÇÃO: URL do seu back-end Spring Boot
-      // Agora está apontando para 'http://localhost:8080/usuarios'
-      // ----------------------------------------------------
       const response = await fetch('http://localhost:8080/usuarios', {
         method: 'POST',
         headers: {
@@ -109,13 +99,12 @@ const JuntaSe = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Erro detalhado da resposta do backend:', errorText); // Loga o erro completo
+        console.error('Erro detalhado da resposta do backend:', errorText);
         let errorMessage = 'Erro ao cadastrar. Tente novamente.';
         try {
-          const errorData = JSON.parse(errorText); // Tenta parsear como JSON para mensagens mais amigáveis
+          const errorData = JSON.parse(errorText);
           errorMessage = errorData.message || errorData.error || errorMessage;
         } catch (e) {
-          // Se não for JSON, o 'errorText' já é a mensagem
         }
         alert('Erro ao cadastrar: ' + errorMessage);
         return;
@@ -174,7 +163,7 @@ const JuntaSe = () => {
         <div className="mb-4">
           <label className="block mb-1">Endereço:</label>
           <input name="endereco" value={formData.endereco} onChange={handleChange} className="w-full border p-2 rounded" required />
-          {/* Nota: 'endereco' no React será mapeado para 'studioAdress' no Spring Boot */}
+
         </div>
 
         {role === "CLIENTE" && (

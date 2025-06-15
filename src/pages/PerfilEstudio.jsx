@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const PerfilEstudio = () => {
   const navigate = useNavigate();
-  // Obtém os dados do estúdio do localStorage
   const [estudioData, setEstudioData] = useState(() => {
     const storedData = localStorage.getItem("estudio");
     return storedData ? JSON.parse(storedData) : null;
@@ -11,27 +10,23 @@ const PerfilEstudio = () => {
 
   const [abaAtiva, setAbaAtiva] = useState("informacoes");
 
-  // Estados para os campos de edição do ESTÚDIO
   const [editStudioName, setEditStudioName] = useState("");
   const [editStudioDescription, setEditStudioDescription] = useState("");
   const [editStudioInstagram, setEditStudioInstagram] = useState("");
   const [editProfilePictureBase64, setEditProfilePictureBase64] = useState("");
 
-  // --- NOVOS ESTADOS PARA ADICIONAR ARTISTA ---
-  const [showAddArtistForm, setShowAddArtistForm] = useState(false); // Para controlar a visibilidade do formulário
-  // Estado para um ÚNICO novo artista sendo adicionado
+  const [showAddArtistForm, setShowAddArtistForm] = useState(false); 
+
   const [newArtistFormData, setNewArtistFormData] = useState({
     nome: "",
     estilo: "",
     descricao: "",
-    biografia: "", // Adicionado campo de biografia
+    biografia: "",
     instagram: "",
     fotos: [],
   });
-  // --- FIM DOS NOVOS ESTADOS ---
 
 
-  // useEffect para preencher os estados de edição do estúdio
   useEffect(() => {
     if (abaAtiva === "editar" && estudioData) {
       setEditStudioName(estudioData.studioName || "");
@@ -52,7 +47,7 @@ const PerfilEstudio = () => {
     { id: "editar", label: "Editar Dados" },
   ];
 
-  // Função para converter arquivo para Base64 (reutilizada do JuntaSe)
+
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -61,16 +56,15 @@ const PerfilEstudio = () => {
       reader.onerror = (error) => reject(error);
     });
 
-  // Função para lidar com a mudança da imagem de perfil do ESTÚDIO
+
   const handleProfilePictureChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const base64 = await toBase64(file);
-      setEditProfilePictureBase64(base64); // Armazena a string Base64
+      setEditProfilePictureBase64(base64);
     }
   };
 
-  // --- FUNÇÕES DE MANIPULAÇÃO DO FORMULÁRIO DE NOVO ARTISTA (ADAPTADAS DO JuntaSe) ---
   const handleNewArtistChange = (e) => {
     const { name, value } = e.target;
     setNewArtistFormData((prev) => ({ ...prev, [name]: value }));
@@ -81,7 +75,6 @@ const PerfilEstudio = () => {
     const base64Files = await Promise.all(Array.from(files).slice(0, 5).map(toBase64)); // Limite de 5 fotos
     setNewArtistFormData((prev) => ({ ...prev, fotos: base64Files }));
   };
-  // --- FIM DAS FUNÇÕES DE MANIPULAÇÃO DO FORMULÁVEL DE NOVO ARTISTA ---
 
 
   // Função para enviar os dados atualizados do ESTÚDIO para o backend
@@ -124,46 +117,40 @@ const PerfilEstudio = () => {
   };
 
 
-  // --- FUNÇÃO PARA ADICIONAR UM NOVO ARTISTA (ADAPTADA DO JuntaSe E DA REQUISIÇÃO ANTERIOR) ---
   const handleAddArtist = async (e) => {
     e.preventDefault();
 
-    // Mapeia os nomes dos campos do formulário para os nomes esperados pelo Spring Boot Artist Model
     const artistPayload = {
       artistName: newArtistFormData.nome,
       artistStyle: newArtistFormData.estilo,
       artistDescription: newArtistFormData.descricao,
-      artistBiography: newArtistFormData.biografia, // Mapeando a biografia
+      artistBiography: newArtistFormData.biografia,
       instagramLink: newArtistFormData.instagram,
       artistImages: newArtistFormData.fotos,
     };
 
     try {
-      // Endpoint para criar um artista, associando-o ao studioId via @RequestParam
       const response = await fetch(`http://localhost:8080/artistas?studioId=${estudioData.studioId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(artistPayload),
       });
 
       if (response.ok) {
-        // const createdArtist = await response.json(); // Se precisar dos dados do artista recém-criado
+        // const createdArtist = await response.json(); // Se precisarmos dos dados do artista recém-criado
         alert("Artista adicionado com sucesso!");
 
-        // Recarregar os dados do estúdio para atualizar a lista de artistas
         const updatedEstudioResponse = await fetch(`http://localhost:8080/usuarios/${estudioData.studioId}`);
         if (updatedEstudioResponse.ok) {
             const updatedEstudio = await updatedEstudioResponse.json();
             localStorage.setItem("estudio", JSON.stringify(updatedEstudio));
-            setEstudioData(updatedEstudio); // Atualiza o estado para re-renderizar com o novo artista
+            setEstudioData(updatedEstudio);
         } else {
             console.error("Erro ao recarregar dados do estúdio após adicionar artista.");
         }
 
-        // Limpa o formulário de novo artista
         setNewArtistFormData({
           nome: "",
           estilo: "",
@@ -172,8 +159,8 @@ const PerfilEstudio = () => {
           instagram: "",
           fotos: [],
         });
-        setShowAddArtistForm(false); // Esconde o formulário
-        setAbaAtiva("artistas"); // Mantém na aba de artistas
+        setShowAddArtistForm(false);
+        setAbaAtiva("artistas");
       } else {
         const errorData = await response.json();
         alert(`Erro ao adicionar artista: ${errorData.message || response.statusText}`);
@@ -183,14 +170,12 @@ const PerfilEstudio = () => {
       alert("Erro ao conectar com o servidor para adicionar artista.");
     }
   };
-  // --- FIM DA FUNÇÃO handleAddArtist ---
 
 
   return (
     <div className="min-h-screen bg-white px-6 py-10">
       <h2 className="text-3xl font-semibold text-gray-800 mb-6">Meu perfil</h2>
 
-      {/* Menu de Abas */}
       <div className="flex gap-6 border-b pb-2 mb-6">
         {abas.map((aba) => (
           <button
@@ -207,7 +192,6 @@ const PerfilEstudio = () => {
         ))}
       </div>
 
-      {/* Conteúdo das Abas */}
       <div className="bg-gray-100 p-6 rounded-md shadow-md w-full max-w-5xl">
         {abaAtiva === "informacoes" && (
           <div>
@@ -269,7 +253,6 @@ const PerfilEstudio = () => {
               {showAddArtistForm ? "Cancelar Adição" : "Adicionar Novo Artista"}
             </button>
 
-            {/* Formulário de Adicionar Novo Artista */}
             {showAddArtistForm && (
               <div className="bg-white p-4 rounded-md shadow-inner mb-6">
                 <h4 className="text-lg font-semibold mb-3">Novo Artista</h4>
@@ -279,7 +262,7 @@ const PerfilEstudio = () => {
                     <input
                       type="text"
                       id="newArtistName"
-                      name="nome" // Usar 'name' para mapear com newArtistFormData
+                      name="nome"
                       value={newArtistFormData.nome}
                       onChange={handleNewArtistChange}
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
@@ -290,7 +273,7 @@ const PerfilEstudio = () => {
                     <label htmlFor="newArtistStyle" className="block text-sm font-medium text-gray-700">Estilo:</label>
                     <select
                       id="newArtistStyle"
-                      name="estilo" // Usar 'name' para mapear com newArtistFormData
+                      name="estilo"
                       value={newArtistFormData.estilo}
                       onChange={handleNewArtistChange}
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
@@ -315,7 +298,7 @@ const PerfilEstudio = () => {
                     <label htmlFor="newArtistDescription" className="block text-sm font-medium text-gray-700">Descrição:</label>
                     <textarea
                       id="newArtistDescription"
-                      name="descricao" // Usar 'name' para mapear com newArtistFormData
+                      name="descricao"
                       value={newArtistFormData.descricao}
                       onChange={handleNewArtistChange}
                       rows="3"
@@ -326,7 +309,7 @@ const PerfilEstudio = () => {
                     <label htmlFor="newArtistBiography" className="block text-sm font-medium text-gray-700">Biografia:</label>
                     <textarea
                       id="newArtistBiography"
-                      name="biografia" // Usar 'name' para mapear com newArtistFormData
+                      name="biografia"
                       value={newArtistFormData.biografia}
                       onChange={handleNewArtistChange}
                       rows="3"
@@ -338,7 +321,7 @@ const PerfilEstudio = () => {
                     <input
                       type="url"
                       id="newArtistInstagramLink"
-                      name="instagram" // Usar 'name' para mapear com newArtistFormData
+                      name="instagram"
                       value={newArtistFormData.instagram}
                       onChange={handleNewArtistChange}
                       className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
@@ -350,8 +333,8 @@ const PerfilEstudio = () => {
                       type="file"
                       id="newArtistImages"
                       accept="image/*"
-                      multiple // Permite múltiplos arquivos
-                      onChange={handleNewArtistPhotoUpload} // Usar a função de upload de fotos do artista
+                      multiple
+                      onChange={handleNewArtistPhotoUpload}
                       className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
                     />
                     {newArtistFormData.fotos.length > 0 && (
@@ -377,7 +360,7 @@ const PerfilEstudio = () => {
               </div>
             )}
             
-            {/* Lista de Artistas Existentes */}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {estudioData.artistStudio?.length > 0 ? (
                 estudioData.artistStudio.map((artist, index) => (
@@ -413,7 +396,7 @@ const PerfilEstudio = () => {
                   </div>
                 ))
               ) : (
-                // Mensagem quando não há artistas E o formulário NÃO está visível
+
                 !showAddArtistForm && (
                   <p>Nenhum artista cadastrado para este estúdio. Clique em "Adicionar Novo Artista" para começar.</p>
                 )
@@ -421,13 +404,13 @@ const PerfilEstudio = () => {
             </div>
           </div>
         )}
-        {/* --- FIM DO CONTEÚDO DA ABA ARTISTAS --- */}
+
 
         {abaAtiva === "editar" && (
           <div>
             <h3 className="text-xl font-semibold mb-4">Editar Dados do Estúdio</h3>
             <form onSubmit={handleUpdateEstudio} className="space-y-4">
-              {/* Campos de edição do ESTÚDIO */}
+
               <div>
                 <label htmlFor="profilePicture" className="block text-sm font-medium text-gray-700">
                   Foto de Perfil:
