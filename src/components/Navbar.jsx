@@ -57,7 +57,7 @@ const Navbar = () => {
           JUNTAR-SE
         </Link>
         <Link to="/artistas" className={linkHoverEffect}>
-          ARTISTAS
+          ESTUDIOS
         </Link>
         <Link to="/agendamento" className={linkHoverEffect}>
           AGENDAR

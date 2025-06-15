@@ -32,8 +32,8 @@ const Login = () => {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-
-      login(resp.data.token); // ou login(email), conforme seu contexto
+      const { user } = resp.data;
+      login(user.username); // ou login(email), conforme seu contexto
       navigate("/");
     } catch (err) {
       if (err.response?.status === 400) {

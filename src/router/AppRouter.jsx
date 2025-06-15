@@ -11,6 +11,7 @@ import Login from '../pages/Login';
 import Cadastro from '../pages/Cadastro';
 import HomePrivate from '../pages/HomePrivate';
 import CasaAlfaia from '../pages/CasaAlfaia';
+import StudioPage from '../pages/StudioPage'; 
 import Footer from '../components/Footer';
 import Alysson from '../assets/artists/Alysson';
 import Biana from '../assets/artists/Biana';
@@ -40,6 +41,7 @@ const AppRouter = () => {
         <Route path="../artists/biana" element={<Biana />} />
         <Route path="/agendamento" element={<Agendamento />} />
         <Route path="/redes-sociais" element={<RedesSociais />} />
+        <Route path="/studio/:id" element={<StudioPage />} />
 
         {/* Novas rotas de perfil */}
         <Route path="/perfil-usuario" element={<PerfilUsuario />} />

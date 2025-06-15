@@ -89,7 +89,7 @@ const JuntaSe = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/usuarios', {
+      const response = await fetch('https://complexobackend.onrender.com/usuarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -10,18 +10,16 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const email = localStorage.getItem("email");
-    const token = localStorage.getItem("token");
 
-    if (email && token) {
+    if (email) {
       setIsAuthenticated(true);
       setUserEmail(email);
       fetchStudioDetails(email);
     }
   }, []);
 
-  const login = async (email, token) => {
+  const login = async (email) => {
     localStorage.setItem("email", email);
-    localStorage.setItem("token", token);
     setIsAuthenticated(true);
     setUserEmail(email);
     await fetchStudioDetails(email);
@@ -29,7 +27,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("email");
-    localStorage.removeItem("token");
     setIsAuthenticated(false);
     setStudioName("");
     setUserEmail("");
