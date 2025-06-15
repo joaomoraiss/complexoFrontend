@@ -7,10 +7,12 @@ const Cadastro = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState(""); // Novo estado para o tipo de usuário
+  const [role, setRole] = useState(""); 
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,8 +36,8 @@ const Cadastro = () => {
 
     const endpoint =
       role === "STUDIO"
-        ? "https://complexobackend.onrender.com/auth/register/studio"
-        : "https://complexobackend.onrender.com/auth/register/cliente";
+        ? `${API_BASE}/auth/register/studio`
+        : `${API_BASE}/auth/register/cliente`;
 
     try {
       const response = await axios.post(
@@ -49,13 +51,42 @@ const Cadastro = () => {
         {
           headers: {
             "Content-Type": "application/json",
-          }
+          },
         }
       );
 
       if (response.status === 200) {
         setSuccessMessage("Cadastro realizado com sucesso!");
-        setTimeout(() => navigate("/iniciar-sessao"), 2000);
+
+        //resposta do registro/studio tem que retornar o objeto "User" completo.
+        // tem que ter uma requisição GET para buscar o perfil completo pelo email.
+        try {
+          const profileResponse = await axios.get(
+            `${API_BASE}/usuarios/email/${email}`
+          );
+
+          if (profileResponse.status === 200) {
+            const completeUserData = profileResponse.data;
+
+            localStorage.setItem(
+              role === "STUDIO" ? "estudio" : "cliente",
+              JSON.stringify(completeUserData)
+            );
+
+            setTimeout(() => {
+              navigate(role === "STUDIO" ? "/perfil-estudio" : "/perfil-usuario");
+            }, 2000);
+          } else {
+            console.error("Erro ao obter dados do perfil após cadastro:", profileResponse);
+            setErrorMessage("Cadastro realizado, mas não foi possível carregar o perfil. Faça login manualmente.");
+            setTimeout(() => navigate("/iniciar-sessao"), 2000);
+          }
+        } catch (profileError) {
+          console.error("Erro na requisição para obter perfil após cadastro:", profileError);
+          setErrorMessage("Cadastro realizado, mas erro de rede ao carregar perfil. Faça login manualmente.");
+          setTimeout(() => navigate("/iniciar-sessao"), 2000);
+        }
+
       }
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
@@ -73,7 +104,7 @@ const Cadastro = () => {
       {successMessage && <div className="mb-4 text-green-500 text-center">{successMessage}</div>}
 
       <form className="w-full max-w-md" onSubmit={handleSubmit}>
-        {/* Seleção de Tipo */}
+        {/*select de tipo de usuario*/}
         <div className="flex justify-center mb-6">
           <div className="flex">
             <button
@@ -97,7 +128,7 @@ const Cadastro = () => {
           </div>
         </div>
 
-        {/* Inputs */}
+        {/* inputs*/}
         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
           Nome do Estúdio/Cliente
         </label>
@@ -140,7 +171,7 @@ const Cadastro = () => {
         <input
           type="password"
           id="confirmPassword"
-          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 mb-4"
+          className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-400 mb-4"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required

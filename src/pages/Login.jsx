@@ -32,18 +32,37 @@ const Login = () => {
         },
         { headers: { "Content-Type": "application/json" } }
       );
-      const { user } = resp.data;
-      login(user.username); // ou login(email), conforme seu contexto
-      navigate("/");
+
+      const completeUserData = resp.data.user; 
+
+      if (!completeUserData || !completeUserData.studioEmail || !completeUserData.role) {
+        setErrorMessage("Erro: Dados do usuário incompletos na resposta do login.");
+        recaptchaRef.current.reset();
+        setCaptchaValue(null);
+        return;
+      }
+
+      
+      const userRole = completeUserData.role; 
+
+      localStorage.setItem(
+        userRole === "STUDIO" ? "estudio" : "cliente",
+        JSON.stringify(completeUserData)
+      );
+
+      login(completeUserData.studioEmail); 
+
+      navigate(userRole === "STUDIO" ? "/perfil-estudio" : "/perfil-usuario");
+
     } catch (err) {
       if (err.response?.status === 400) {
         setErrorMessage(err.response.data);
       } else if (err.response?.status === 401) {
         setErrorMessage("E-mail ou senha incorretos.");
       } else {
+        console.error("Erro desconhecido no login:", err);
         setErrorMessage("Erro ao fazer login. Tente novamente.");
       }
-      // reseta o reCAPTCHA para uma nova tentativa
       recaptchaRef.current.reset();
       setCaptchaValue(null);
     }
@@ -97,7 +116,7 @@ const Login = () => {
           <div className="mt-4 text-center text-sm text-gray-600">
             <Link to="/esqueci-senha" className="hover:underline">
               Esqueci a senha
-            </Link>
+            </Link>{" "}
             {" • "}
             <Link to="/cadastro" className="hover:underline">
               Cadastre-se
