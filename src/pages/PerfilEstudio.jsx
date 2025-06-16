@@ -75,7 +75,7 @@ const PerfilEstudio = () => {
 
   const handleNewArtistChange = (e) => {
     const { name, value } = e.target;
-    // Para o campo de instagram do artista, também remove URLs ou '@'
+
     if (name === "instagram") {
       try {
         const url = new URL(value);
@@ -98,15 +98,15 @@ const PerfilEstudio = () => {
   const handleUpdateEstudio = async (e) => {
     e.preventDefault();
 
-    // Normaliza o nome de usuário do Instagram antes de enviar
+
     const instagramToSend = editStudioInstagram.replace(/^@/, '');
 
     const updatedData = {
       studioId: estudioData.studioId,
       studioName: editStudioName,
       studioDescription: editStudioDescription,
-      studioInstagram: instagramToSend, // Envia apenas o nome de usuário
-      profilePictureBase664: editProfilePictureBase64, // Corrigido o nome para profilePictureBase64
+      studioInstagram: instagramToSend, 
+      profilePictureBase664: editProfilePictureBase64, 
     };
 
     try {
@@ -140,7 +140,7 @@ const PerfilEstudio = () => {
   const handleAddArtist = async (e) => {
     e.preventDefault();
 
-    // Normaliza o nome de usuário do Instagram do artista antes de enviar
+
     const artistInstagramToSend = newArtistFormData.instagram.replace(/^@/, '');
 
     const artistPayload = {
@@ -209,7 +209,7 @@ const PerfilEstudio = () => {
 
       if (response.ok) {
         alert("Artista removido com sucesso!");
-        // Atualiza o estado local removendo o artista
+
         const updatedArtists = estudioData.artistStudio.filter(artist => artist.artistId !== artistId);
         const updatedEstudioData = { ...estudioData, artistStudio: updatedArtists };
         localStorage.setItem("estudio", JSON.stringify(updatedEstudioData));
@@ -262,11 +262,11 @@ const PerfilEstudio = () => {
   };
 
 
-  // Estatísticas do estúdio
+
   const stats = {
     artistas: estudioData.artistStudio?.length || 0,
     fotos: estudioData.studioImages?.length || 0,
-    avaliacao: 4.9 // Exemplo estático
+    avaliacao: 0.0 
   };
 
   return (
@@ -278,7 +278,7 @@ const PerfilEstudio = () => {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Barra lateral */}
+
           <div className="lg:w-1/4">
             <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6">
               <div className="flex flex-col items-center mb-6">
@@ -323,10 +323,10 @@ const PerfilEstudio = () => {
             </div>
           </div>
 
-          {/* Conteúdo principal */}
+
           <div className="lg:w-3/4">
             <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
-              {/* Cabeçalho do perfil */}
+
               <div className="flex items-center gap-4 mb-8">
                 {estudioData.profilePictureBase64 ? (
                   <img
@@ -350,7 +350,7 @@ const PerfilEstudio = () => {
                 </div>
               </div>
 
-              {/* Conteúdo das abas */}
+
               {abaAtiva === "informacoes" && (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -373,7 +373,7 @@ const PerfilEstudio = () => {
                         </div>
                         <h3 className="font-semibold text-slate-800">Instagram</h3>
                       </div>
-                      {/* Corrigido para exibir apenas o nome de usuário, mas com link correto */}
+
                       {estudioData.studioInstagram && (
                         <a
                           href={`https://instagram.com/${estudioData.studioInstagram.replace(/^@/, '')}`}
@@ -547,12 +547,12 @@ const PerfilEstudio = () => {
                           <div className="relative">
                             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">@</span>
                             <input
-                              type="text" // Mudado de "url" para "text"
+                              type="text" 
                               name="instagram"
                               value={newArtistFormData.instagram}
                               onChange={handleNewArtistChange}
-                              placeholder="nome_de_usuario" // Placeholder para orientar
-                              className="w-full p-3 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 pl-8" // Adicionado padding para o '@'
+                              placeholder="nome_de_usuario" 
+                              className="w-full p-3 border border-slate-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 pl-8" 
                             />
                           </div>
                         </div>
@@ -726,7 +726,7 @@ const PerfilEstudio = () => {
                         </div>
                       </div>
                     </div>
-                    {/* Continuação do formulário de edição do estúdio */}
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="studioName" className="block text-sm font-medium text-slate-700 mb-1">
@@ -788,5 +788,5 @@ const PerfilEstudio = () => {
     </div>
   );
 };
-
+{/*CONFERENCIA*/}
 export default PerfilEstudio;

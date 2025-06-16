@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// Importando o ícone do Instagram do Font Awesome (Fa)
-import { FaInstagram } from "react-icons/fa"; // Certifique-se de ter 'react-icons' instalado
-import { MdLocationOn } from "react-icons/md"; // Ícone de localização
+import { FaInstagram } from "react-icons/fa"; 
+import { MdLocationOn } from "react-icons/md"; 
 
 const MeuPerfilPublico = () => {
   const { studioId } = useParams();
@@ -12,8 +11,6 @@ const MeuPerfilPublico = () => {
   useEffect(() => {
     const fetchEstudio = async () => {
       try {
-        // ATENÇÃO: Se seu backend local estiver rodando, mude esta URL para localhost:8080
-        // Por exemplo: `http://localhost:8080/usuarios/${studioId}`
         const response = await fetch(`https://complexobackend.onrender.com/usuarios/${studioId}`);
         if (!response.ok) throw new Error("Erro ao buscar dados do estúdio");
         const data = await response.json();
@@ -34,7 +31,7 @@ const MeuPerfilPublico = () => {
   return (
     <div className="min-h-screen bg-white px-6 py-10">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+
         <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
           <img
             src={estudio.profilePictureBase64}
@@ -45,30 +42,30 @@ const MeuPerfilPublico = () => {
             <h1 className="text-4xl font-bold mb-2">{estudio.studioName}</h1>
             <p className="text-slate-700 mb-2">{estudio.studioDescription}</p>
 
-            {/* Novo: Endereço do Estúdio */}
-            {estudio.studioAdress && ( // Verifica se o endereço existe
+
+            {estudio.studioAdress && ( 
               <p className="text-gray-700 mb-2 flex items-center gap-2">
                 <MdLocationOn className="text-xl text-blue-500" />
                 {estudio.studioAdress}
               </p>
             )}
 
-            {/* Instagram estilizado para o Estúdio */}
-            {estudio.studioInstagram && ( // Verifica se o Instagram existe
+
+            {estudio.studioInstagram && ( 
               <a
-                href={`https://instagram.com/${estudio.studioInstagram.replace(/^@/, '')}`} // Garante que não tenha '@' duplicado no link
+                href={`https://instagram.com/${estudio.studioInstagram.replace(/^@/, '')}`} 
                 target="_blank"
                 rel="noreferrer"
-                className="text-blue-600 hover:underline flex items-center gap-2 font-semibold" // Adiciona font-semibold para negrito e flex para alinhamento do ícone
+                className="text-blue-600 hover:underline flex items-center gap-2 font-semibold" 
               >
-                <FaInstagram className="text-xl text-pink-600" /> {/* Ícone do Instagram */}
+                <FaInstagram className="text-xl text-pink-600" /> 
                 Instagram
               </a>
             )}
           </div>
         </div>
 
-        {/* Galeria */}
+
         <h2 className="text-2xl font-semibold mb-4">Galeria</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {estudio.studioImages?.length > 0 ? (
@@ -107,9 +104,9 @@ const MeuPerfilPublico = () => {
                 </div>
                 <p className="mb-2">{artist.artistDescription}</p>
                 {artist.instagramLink && (
-                  // Instagram estilizado para o Artista (mantido similar ao do estúdio)
+
                   <a
-                    href={`https://instagram.com/${artist.instagramLink.replace(/^@/, '')}`} // Garante que não tenha '@' duplicado no link
+                    href={`https://instagram.com/${artist.instagramLink.replace(/^@/, '')}`} 
                     target="_blank"
                     rel="noreferrer"
                     className="text-blue-600 hover:underline flex items-center gap-2 font-semibold"
@@ -118,7 +115,6 @@ const MeuPerfilPublico = () => {
                     Instagram
                   </a>
                 )}
-
                 {/* Mini Galeria */}
                 {artist.artistImages?.length > 1 && (
                   <div className="flex gap-2 mt-3">
@@ -142,5 +138,5 @@ const MeuPerfilPublico = () => {
     </div>
   );
 };
-
+{/*CONFERENCIA*/}
 export default MeuPerfilPublico;
