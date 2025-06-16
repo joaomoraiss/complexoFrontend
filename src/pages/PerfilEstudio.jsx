@@ -42,6 +42,7 @@ const PerfilEstudio = () => {
     { id: "galeria", label: "Galeria" },
     { id: "artistas", label: "Artistas" },
     { id: "editar", label: "Editar Dados" },
+    { id: "perfilpublico", label: "Minha Página" },
   ];
 
   const toBase64 = (file) =>
@@ -202,20 +203,26 @@ const PerfilEstudio = () => {
               </div>
 
               <nav className="space-y-2">
-                {abas.map((aba) => (
-                  <button
-                    key={aba.id}
-                    onClick={() => setAbaAtiva(aba.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl transition-all duration-200 ${
-                      abaAtiva === aba.id
-                        ? "bg-primary-50 text-primary-700 border border-primary-200"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
-                    }`}
-                  >
-                    <span className="font-medium">{aba.label}</span>
-                  </button>
-                ))}
-              </nav>
+  {abas.map((aba) => (
+    <button
+      key={aba.id}
+      onClick={() => {
+        if (aba.id === "perfilpublico") {
+          navigate(`/perfil-publico/${estudioData.studioId}`);
+        } else {
+          setAbaAtiva(aba.id);
+        }
+      }}
+      className={`w-full flex items-center gap-3 px-4 py-3 text-left rounded-xl transition-all duration-200 ${
+        abaAtiva === aba.id
+          ? "bg-primary-50 text-primary-700 border border-primary-200"
+          : "text-slate-600 hover:bg-slate-50 hover:text-slate-800"
+      }`}
+    >
+      <span className="font-medium">{aba.label}</span>
+    </button>
+  ))}
+</nav>
             </div>
           </div>
 

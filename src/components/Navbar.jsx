@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { AuthContext } from "../utils/AuthContext";
@@ -9,6 +9,15 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState(null); // 'mais', 'usuario' ou null
   const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const [estudioData, setEstudioData] = useState(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("estudio");
+    if (storedData) {
+      setEstudioData(JSON.parse(storedData));
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -134,11 +143,15 @@ const Navbar = () => {
                 Meus Agendamentos
               </Link>
               <Link
-                to="/casa-alfaia"
+                to={
+                  estudioData
+                    ? `/perfil-publico/${estudioData.studioId}`
+                    : "/"
+                }
                 onClick={closeDropdown}
                 className="block px-4 py-2 text-sm hover:bg-gray-100"
               >
-                Minha Página
+                Minha Página 
               </Link>
               <button
                 onClick={() => {
@@ -158,5 +171,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 

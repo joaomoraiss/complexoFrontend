@@ -21,6 +21,7 @@ import RedesSociais from '../pages/RedesSociais';
 // Novas páginas
 import PerfilUsuario from '../pages/PerfilUsuario';
 import PerfilEstudio from '../pages/PerfilEstudio';
+import MeuPerfilPublico from "../pages/MeuPerfilPublico";
 
 const AppRouter = () => {
   return (
@@ -46,6 +47,8 @@ const AppRouter = () => {
         {/* Novas rotas de perfil */}
         <Route path="/perfil-usuario" element={<PerfilUsuario />} />
         <Route path="/perfil-estudio" element={<PerfilEstudio />} />
+        <Route path="/perfil-publico/:studioId" element={<MeuPerfilPublico />} />
+
       </Routes>
       <Footer />
     </Router>
