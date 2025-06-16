@@ -106,7 +106,7 @@ const PerfilEstudio = () => {
       studioName: editStudioName,
       studioDescription: editStudioDescription,
       studioInstagram: instagramToSend, 
-      profilePictureBase664: editProfilePictureBase64, 
+      profilePictureBase64: editProfilePictureBase64, 
     };
 
     try {
@@ -773,7 +773,7 @@ const PerfilEstudio = () => {
                     <div className="flex justify-end mt-6">
                       <button
                         type="submit"
-                        className="bg-primary-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200"
+                        className="bg-primary-600 text-black px-6 py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-200"
                       >
                         Salvar Alterações
                       </button>
