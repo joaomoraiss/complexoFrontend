@@ -145,7 +145,7 @@ const Navbar = () => {
               <Link
                 to={
                   estudioData
-                    ? `/perfil-publico/${estudioData.studioId}`
+                    ? `/studio/${estudioData.studioId}`
                     : "/"
                 }
                 onClick={closeDropdown}

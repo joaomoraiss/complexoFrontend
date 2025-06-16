@@ -54,7 +54,7 @@ const PerfilEstudio = () => {
     { id: "galeria", label: "Galeria" },
     { id: "artistas", label: "Artistas" },
     { id: "editar", label: "Editar Dados" },
-    { id: "perfilpublico", label: "Minha Página" },
+    
   ];
 
   const toBase64 = (file) =>
@@ -225,41 +225,78 @@ const PerfilEstudio = () => {
   };
 
 
-  const handleGalleryPhotoUpload = async (e) => {
-    const files = Array.from(e.target.files);
-    const base64Files = await Promise.all(files.slice(0, 5).map(toBase64));
+  // Função para adicionar fotos à galeria
+    const handleGalleryPhotoUpload = async (e) => {
+      const files = Array.from(e.target.files);
+      if (files.length === 0) return;
+      
+      // Limitar a 5 fotos por upload
+      const selectedFiles = files.slice(0, 5);
+      
+      try {
+        const base64Files = await Promise.all(selectedFiles.map(toBase64));
+        
+        // Enviar para o backend Spring Boot
+        const response = await fetch(
+          `https://complexobackend.onrender.com/usuarios/${estudioData.studioId}/gallery`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ images: base64Files }),
+          }
+        );
 
-    const updatedData = {
-      ...estudioData,
-      studioImages: [...(estudioData.studioImages || []), ...base64Files],
+        if (response.ok) {
+          const updatedStudio = await response.json();
+          localStorage.setItem("estudio", JSON.stringify(updatedStudio));
+          setEstudioData(updatedStudio);
+        } else {
+          const errorData = await response.json();
+          alert(`Erro: ${errorData.message || "Falha ao adicionar fotos"}`);
+        }
+      } catch (error) {
+        console.error("Erro ao processar fotos:", error);
+        alert("Erro ao processar as fotos");
+      }
     };
 
-    try {
-      const response = await fetch(
-        `https://complexobackend.onrender.com/usuarios/${estudioData.studioId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedData),
-        }
-      );
+    // Função para remover foto da galeria
+    const handleRemoveGalleryPhoto = async (index) => {
+      if (!window.confirm("Tem certeza que deseja remover esta foto?")) return;
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("estudio", JSON.stringify(data));
-        setEstudioData(data);
-        alert("Fotos adicionadas com sucesso na galeria!");
-      } else {
-        const errorData = await response.json();
-        alert(`Erro ao atualizar galeria: ${errorData.message || response.statusText}`);
+      try {
+        const response = await fetch(
+          `https://complexobackend.onrender.com/usuarios/${estudioData.studioId}/gallery/${index}`,
+          {
+            method: "DELETE",
+            headers: {
+            }
+          }
+        );
+
+        if (response.ok) {
+          // Atualiza localmente removendo a foto pelo índice
+          const updatedStudioImages = [...estudioData.studioImages];
+          updatedStudioImages.splice(index, 1);
+          
+          const updatedEstudioData = {
+            ...estudioData,
+            studioImages: updatedStudioImages
+          };
+          
+          localStorage.setItem("estudio", JSON.stringify(updatedEstudioData));
+          setEstudioData(updatedEstudioData);
+        } else {
+          const errorData = await response.json();
+          alert(`Erro: ${errorData.message || "Falha ao remover foto"}`);
+        }
+      } catch (error) {
+        console.error("Erro ao remover foto:", error);
+        alert("Erro ao remover foto");
       }
-    } catch (error) {
-      console.error("Erro ao atualizar galeria:", error);
-      alert("Erro ao conectar com o servidor para atualizar a galeria.");
-    }
-  };
+    };
 
 
 
@@ -327,28 +364,7 @@ const PerfilEstudio = () => {
           <div className="lg:w-3/4">
             <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8">
 
-              <div className="flex items-center gap-4 mb-8">
-                {estudioData.profilePictureBase64 ? (
-                  <img
-                    src={estudioData.profilePictureBase64}
-                    alt="Logo do estúdio"
-                    className="w-20 h-20 rounded-2xl object-cover"
-                  />
-                ) : (
-                  <div className="w-20 h-20 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl flex items-center justify-center text-slate-600 font-bold text-xl">
-                    S
-                  </div>
-                )}
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-800">
-                    {estudioData.studioName}
-                  </h2>
-                  <p className="text-slate-600">{estudioData.studioEmail}</p>
-                  <div className="text-slate-500 text-sm mt-2">
-                    {estudioData.studioAdress}
-                  </div>
-                </div>
-              </div>
+              
 
 
               {abaAtiva === "informacoes" && (
@@ -433,41 +449,56 @@ const PerfilEstudio = () => {
               )}
 
               {abaAtiva === "galeria" && (
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-slate-800">
-                      Galeria do Estúdio
-                    </h3>
-                    <label className="cursor-pointer bg-primary-600 text-black font-semibold px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200">
-                      Adicionar Fotos
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleGalleryPhotoUpload}
-                        className="hidden"
-                      />
-                    </label>
-                  </div>
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-semibold text-slate-800">
+                        Galeria do Estúdio
+                      </h3>
+                      <label className="cursor-pointer bg-primary-600 text-slate-800 font-semibold px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors duration-200">
+                        Adicionar Fotos
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handleGalleryPhotoUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    {estudioData.studioImages?.length > 0 ? (
-                      estudioData.studioImages.map((foto, index) => (
-                        <div key={index} className="aspect-square overflow-hidden rounded-xl shadow-md">
-                          <img src={foto} alt={`Foto ${index + 1}`} className="w-full h-full object-cover" />
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                      {estudioData.studioImages?.length > 0 ? (
+                        estudioData.studioImages.map((foto, index) => (
+                          <div key={index} className="relative group aspect-square overflow-hidden rounded-xl shadow-md">
+                            <img 
+                              src={foto} 
+                              alt={`Foto ${index + 1}`} 
+                              className="w-full h-full object-cover" 
+                            />
+                            
+                            {/* Botão de remover (aparece ao passar o mouse) */}
+                            <button
+                              onClick={() => handleRemoveGalleryPhoto(index)}
+                              className="absolute top-2 right-2 bg-red-500 text-slate-800 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              {/* Ícone de lixeira */}
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-span-full text-center py-12">
+                          <div className="mx-auto bg-slate-100 rounded-full w-16 h-16 flex items-center justify-center mb-4 text-slate-400 text-xl">
+                            🖼️
+                          </div>
+                          <p className="text-slate-600">Nenhuma foto na galeria ainda</p>
                         </div>
-                      ))
-                    ) : (
-                      <div className="col-span-full text-center py-12">
-                        <div className="mx-auto bg-slate-100 rounded-full w-16 h-16 flex items-center justify-center mb-4 text-slate-400 text-xl">
-                          🖼️
-                        </div>
-                        <p className="text-slate-600">Nenhuma foto na galeria ainda</p>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
 
               {abaAtiva === "artistas" && (
