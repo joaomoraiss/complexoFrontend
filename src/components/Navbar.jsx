@@ -10,14 +10,31 @@ const Navbar = () => {
   const { isAuthenticated, studioName, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [estudioData, setEstudioData] = useState(null);
-
-  useEffect(() => {
+  // MANTENHA ESTE ESTADO E useEffect. Ele carrega os dados do estúdio do localStorage,
+  // o que é necessário para o link "Minha Página" se o AuthContext ainda não tiver o studioId.
+  const [estudioData, setEstudioData] = useState(() => {
     const storedData = localStorage.getItem("estudio");
-    if (storedData) {
-      setEstudioData(JSON.parse(storedData));
-    }
-  }, []);
+    return storedData ? JSON.parse(storedData) : null;
+  });
+
+  // Este useEffect atualiza o estado local 'estudioData' sempre que o 'estudio' no localStorage muda.
+  // Isso garante que o studioId seja pego corretamente para o link "Minha Página".
+  // É crucial para o link funcionar logo após o login ou atualização do perfil.
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const storedData = localStorage.getItem("estudio");
+      setEstudioData(storedData ? JSON.parse(storedData) : null);
+    };
+
+    window.addEventListener('storage', handleStorageChange); // Escuta por mudanças no localStorage
+    // Executa uma vez na montagem para garantir que o estado inicial esteja correto
+    handleStorageChange();
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange); // Limpeza
+    };
+  }, []); // Dependência vazia significa que ele só se configura uma vez.
+
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
@@ -142,17 +159,16 @@ const Navbar = () => {
               >
                 Meus Agendamentos
               </Link>
+              {/* === CORREÇÃO AQUI === */}
               <Link
-                to={
-                  estudioData
-                    ? `/studio/${estudioData.studioId}`
-                    : "/"
-                }
+                // Verifica se estudioData existe e se tem studioId antes de construir o link
+                to={estudioData && estudioData.studioId ? `/studio/${estudioData.studioId}` : "/"}
                 onClick={closeDropdown}
                 className="block px-4 py-2 text-sm hover:bg-gray-100"
               >
                 Minha Página 
               </Link>
+              {/* ===================== */}
               <button
                 onClick={() => {
                   handleLogout();
@@ -171,4 +187,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
